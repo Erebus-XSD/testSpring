@@ -1,8 +1,11 @@
 package yc.aspect;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
@@ -16,7 +19,19 @@ import java.util.Date;
  */
 @Aspect
 @Component //IOC注解 以实现Spring托管
+@Order(value=100)
 public class LogAspect {
+
+    @Around("execution(* yc.biz.StudentBizImpl.find*(..))")
+    public Object compute(ProceedingJoinPoint pjp) throws Throwable {
+        System.out.println("====compute====进到增强");
+        long start=System.currentTimeMillis();
+        Object retVal=pjp.proceed();
+        long end=System.currentTimeMillis();
+        System.out.println("====compute要退出增强了");
+        System.out.println("========这个方法运行时长为:"+(end-start));
+        return retVal;
+    }
     //切入点的声明
     @Pointcut("execution(* yc.biz.StudentBizImpl.add*(..))")//add*指以add开头的方法
     private void add(){}//这个方法没有任何实际意义 仅仅是作为参照点的一个寄生体

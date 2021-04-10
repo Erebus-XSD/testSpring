@@ -1,5 +1,7 @@
 package yc.dao;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.Random;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Random;
  * @author: Erebus
  * @create: 2021-04-04 14:45
  */
+@Repository
 public class StudentDaoMybatisImpl  implements  StudentDao {
     @Override
     public int add(String name) {
